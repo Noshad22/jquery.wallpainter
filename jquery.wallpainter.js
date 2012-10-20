@@ -39,29 +39,68 @@
 
       // Default mixins
       mixins = {
-        // Mixin to draw a straight line between two points
-        line: function( x1, y1, x2, y2 ) {
+        // Mixin to draw a straight path between two points
+        linePath: function( x1, y1, x2, y2 ) {
          this.moveTo( x1, y1 );
          this.lineTo( x2, y2 );
+        },
+
+        // Mixin to draw a straight line between two points
+        line: function( x1, y1, x2, y2 ) {
+          this.beginPath();
+          this.linePath( x1, y1, x2, y2 );
+          this.stroke();
+        },
+
+        // Mixin to draw a dashed path between two points
+        dashedPath: function( x1, y1, x2, y2, dashLength, gapLength ) {
+          dashLength = dashLength || 3;
+          gapLength = gapLength || 3;
+          var len = 0,
+              x = 0,
+              y = 0,
+              lineLength = Math.sqrt( Math.pow( x2 - x1, 2 ) + Math.pow( y2 - y1, 2 ) ),
+              dashLenX = dashLength * ( ( x2 - x1 ) / lineLength ),
+              dashLenY = dashLength * ( ( y2 - y1 ) / lineLength ),
+              gapLenX = gapLength * ( ( x2 - x1 ) / lineLength ),
+              gapLenY = gapLength * ( ( y2 - y1 ) / lineLength );
+          while ( len <= lineLength ) {
+            this.line( x, y, x + dashLenX, y + dashLenY );
+            x += dashLenX + gapLenX;
+            y += dashLenY + gapLenY;
+            len += dashLength + gapLength;
+          }
+        },
+
+        // Mixin to draw a dashed line between two points
+        dashedLine: function( x1, y1, x2, y2, dashLength, gapLength ) {
+          this.beginPath();
+          this.dashedPath( x1, y1, x2, y2, dashLength, gapLength );
+          this.stroke();
         },
 
         // Mixin to iterate a function shifting x and y in a range
         repeat: function( opts, func ) {
           var defts = {
-            from: [ 0, 0 ],
-            to: [ 1, 1 ],
-            increment: [ 10, 10 ]
-          },
-          x, y;
+                from: [ 0, 0 ],
+                to: [ 1, 1 ],
+                increment: [ 10, 10 ]
+              },
+              x, y, i;
+          for ( i = 0; i <= 1; i++ ) {
+            if ( opts.increment[ i ] === 0 ) {
+              opts.increment[ i ] = ( ( opts.to[ i ] - opts.from[ i ] ) * 2 ) || 1;
+            }
+          }
           opts = $.extend( defts, opts );
           for( x = opts.from[0]; x <= opts.to[0]; x += opts.increment[0] ) {
             for( y = opts.from[1]; y <= opts.to[1]; y += opts.increment[1] ) {
-              func( x, y, ( x - opts.from[0] ) / opts.increment[0], ( y - opts.from[1] ) / opts.increment[1] );
+              func.call( this, x, y, ( x - opts.from[0] ) / opts.increment[0], ( y - opts.from[1] ) / opts.increment[1] );
             }
           }
         },
 
-        // Mixin to draw a polygon
+        // Mixin to draw a polygon path
         polygon: function() {
           this.beginPath();
           for( var i in arguments ) { if ( arguments.hasOwnProperty( i ) ) {
@@ -75,7 +114,7 @@
         },
 
         // Mixin to paint bacckground color
-        paintBackground: function( color ) {
+        fillBackground: function( color ) {
           var originalFillStyle = this.fillStyle;
           if ( color ) {
             this.fillStyle = color;
