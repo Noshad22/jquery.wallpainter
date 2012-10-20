@@ -39,13 +39,13 @@
 
       // Default mixins
       mixins = {
-        // Utility to draw a straight line between two points
+        // Mixin to draw a straight line between two points
         line: function( x1, y1, x2, y2 ) {
          this.moveTo( x1, y1 );
          this.lineTo( x2, y2 );
         },
 
-        // Repeat a drawing shifting x and y in a range
+        // Mixin to iterate a function shifting x and y in a range
         repeat: function( opts, func ) {
           var defts = {
             from: [ 0, 0 ],
@@ -61,7 +61,7 @@
           }
         },
 
-        // Utility to draw a polygon
+        // Mixin to draw a polygon
         polygon: function() {
           this.beginPath();
           for( var i in arguments ) { if ( arguments.hasOwnProperty( i ) ) {
@@ -84,7 +84,7 @@
           this.strokeStyle = originalFillStyle;
         },
 
-        // Utility to draw background noise
+        // Mixin to draw background noise
         noise: function( opts ) {
           var defts = {
             opacity: { from: 0.1, to: 0.5 },

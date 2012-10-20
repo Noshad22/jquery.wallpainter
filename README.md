@@ -1,7 +1,7 @@
 jQuery WallPainter
 ==================
 
-A jQuery plugin to create tiled HTML backgrounds programmatically (like [these](http://www.lucaongaro.eu/demos/jquery.wallpainter/) ). You can code and preview them in Chrome/Safari/Firefox and export them as PNG.
+A jQuery plugin to create tiled HTML backgrounds programmatically (like [these](http://www.lucaongaro.eu/demos/jquery.wallpainter/)). You can code and preview them in Chrome/Safari/Firefox and export them as PNG.
 
 Usage
 -----
