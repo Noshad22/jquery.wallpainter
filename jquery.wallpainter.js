@@ -203,8 +203,8 @@
 
     var ctx, dataURL,
         canvas = document.createElement("canvas"),
-        originalBgImage = this.css("background-image"),
-        options = $.wallPainter.extendDefaults( options );
+        originalBgImage = this.css("background-image");
+    options = $.wallPainter.extendDefaults( options );
     
     // Detect canvas support
     if ( !canvas.getContext || !canvas.getContext("2d") ) {

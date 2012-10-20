@@ -13,15 +13,15 @@ Just select an HTML element and call `jQuery("#my_element").wallPainter({ ... })
 // Let's draw a pinstriped background
 $("body").wallPainter({
 
-	// Dimensions of our tiled background image
+  // Dimensions of our tiled background image
   width: 30,
   height: 30,
 
   paint: function( context ) {
-  	// First paint a uniform background
-  	context.fillBackground("#333");
+    // First paint a uniform background
+    context.fillBackground("#333");
 
-  	// Then add some sewing (basicly a dashed line)
+    // Then add some sewing (basicly a dashed line)
     context.strokeStyle = "rgba(255, 255, 255, 0.3)";
     context.dashedLine( 15, 0, 15, 30 );
 
@@ -51,8 +51,8 @@ In addition to the standard canvas methods, `jQuery.wallPainter` mixins some use
 * `context.repeat( { from: [x1, y1], to: [x2, y2], increment: [incX, incY] }, func )`: call function `func` iteratively with arguments `x, y, xIteration, yIteration` incrementing `x` and `y` with the specified range and increment step.
 
 * `context.noise( options )`: paint background noise. Many parameters can be configured, and the defaults are the following:
-	```javascript
-	{
+  ```javascript
+  {
     opacity: { from: 0.1, to: 0.5 },
     grainDimension: 1,
     fromColor: "000000",
@@ -68,13 +68,13 @@ You can easily add your custom helpers:
 ```javascript
 jQuery.wallPainter.mixin({
 
-	myHelper: function() {
-		// here `this` is the canvas context
-	},
+  myHelper: function() {
+    // here `this` is the canvas context
+  },
 
-	anotherHelper: function() {
-		// ...
-	}
+  anotherHelper: function() {
+    // ...
+  }
 
 });
 ```
