@@ -40,28 +40,24 @@ Mixins
 
 In addition to the standard canvas methods, `jQuery.wallPainter` mixins some useful helper methods in the `context` object:
 
-* `context.line( fromX, fromY, toX, toY )`: draw a line from `(fromX, fromX)` to `(toX, toY)`
-
-* `context.dashedLine( fromX, fromY, toX, toY, dashLength, gapLength )`: draw a dashed line from `(fromX, fromX)` to `(toX, toY)`
-
+* `context.fillBackground( color )`: fill the background with `color`
+* `context.line( fromX, fromY, toX, toY )`: draw a line from `(fromX, fromY)` to `(toX, toY)`
+* `context.dashedLine( fromX, fromY, toX, toY, dashLength, gapLength )`: draw a dashed line from `(fromX, fromY)` to `(toX, toY)`
 * `context.polygon( x1, y1, x2, y2, x3, y3, ... )`: draw a polygonal path with vertexes `(x1, y1)`, `(x2, y2)`, `(x3, y3)`, etc.
-
-* `context.fillBackground( color )`: paint the background color
-
 * `context.repeat( { from: [x1, y1], to: [x2, y2], increment: [incX, incY] }, func )`: call function `func` iteratively with arguments `x, y, xIteration, yIteration` incrementing `x` and `y` with the specified range and increment step.
-
 * `context.noise( options )`: paint background noise. Many parameters can be configured, and the defaults are the following:
-  ```javascript
-  {
-    opacity: { from: 0.1, to: 0.5 },
-    grainDimension: 1,
-    fromColor: "000000",
-    toColor: "606060",
-    independentChannels: false,
-    distribution: "bell",
-    bias: 0
-  }
-  ```
+
+```javascript
+context.noise({
+  opacity: { from: 0.1, to: 0.5 },
+  grainDimension: 1,
+  fromColor: "000000",
+  toColor: "606060",
+  independentChannels: false,
+  distribution: "bell",
+  bias: 0
+});
+```
 
 You can easily add your custom helpers:
 
