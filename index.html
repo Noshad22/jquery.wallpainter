@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery WallPainter demo</title>
+    <style type="text/css">
+      body {
+        background: #eee;
+        font-family: Helvetica, Arial, sans-serif;
+        color: #444;
+      }
+      h1 {
+        text-shadow: 0 1px 0 #111;
+      }
+      #wrap {
+        width: 900px;
+        margin: 0 auto;
+      }
+      .box {
+        width: 400px;
+        height: 200px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 -10px 30px rgba(0, 0, 0, 0.3), inset 0 10px 20px rgba(255, 255, 255, 0.1);
+        margin: 10px;
+        float: left;
+      }
+      .towel, .paper, .pie_de_poule {
+        background: #fff;
+      }
+      .pinstriped {
+        background: #333;
+      }
+      .bricks {
+        background: #ccc;
+      }
+      .argyle {
+        background: #fcfbe3;
+      }
+      .denim {
+        background: #000080;
+      }
+      .fabric {
+        background: #fcfbc3;
+      }
+    </style>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="jquery.wallpainter.js"></script>
+  </head>
+  <body>
+
+    <div id="wrap">
+      <h1>jQuery.wallPainter</h1>
+      <p>All backgrounds generated programmatically via JavaScript. Doubleclick to export PNG.</p>
+
+      <div class="box pinstriped"></div>
+      <div class="box towel"></div>
+      <div class="box pie_de_poule"></div>
+      <div class="box paper"></div>
+      <div class="box bricks"></div>
+      <div class="box argyle"></div>
+      <div class="box denim"></div>
+      <div class="box fabric"></div>
+    </div>
+
+    <script type="text/javascript">
+      $(function() {
+
+        // Pinstribed background
+        $(".pinstriped").wallPainter({
+          width: 30,
+          height: 30,
+          paint: function(context) {
+            context.paintBackground("#333");
+            context.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            context.beginPath();
+            for(var y = 0; y < 30; y += 3) {
+              context.line(15.5, y + 1.5, 15.5, y + 2.5);
+            }
+            context.stroke();
+            context.noise({opacity: 0.1});
+          }
+        });
+
+        // Towel background
+        $(".towel").wallPainter({
+          width: 30,
+          height: 30,
+          paint: function(context) {
+            context.lineWidth = 10;
+            context.strokeStyle = "rgba(150, 0, 0, 0.5)";
+            context.beginPath();
+            context.line(15.5, 0, 15.5, 30);
+            context.stroke();
+            context.beginPath();
+            context.line(0, 15.5, 30, 15.5);
+            context.stroke();
+            context.lineWidth = 1;
+            context.beginPath();
+            context.line(5, 0, 5, 30);
+            context.stroke();
+            context.beginPath();
+            context.line(0, 5, 30, 5);
+            context.stroke();
+          }
+        });
+        // Pie de poule background
+        $(".pie_de_poule").wallPainter({
+          width: 20,
+          height: 20,
+          paint: function(context) {
+            context.fillStyle = "#333"
+            context.fillRect(0, 0, 10, 5);
+            context.fillRect(15, 0, 20, 10);
+            context.fillRect(0, 0, 10, 5);
+            context.fillRect(10, 15, 20, 20);
+            context.fillRect(0, 10, 5, 20);
+            context.noise({opacity: 0.1, fromColor: "ffffff", toColor: "333333"})
+          }
+        });
+
+        // Paper background
+        $(".paper").wallPainter({
+          width: 100,
+          height: 100,
+          paint: function(context) {
+            context.noise({
+              fromColor: "003355",
+              toColor: "0050a0",
+              bias: function(v){return v < 0.5 ? 0 : Math.pow(v,5)},
+              opacity: {
+                from: 0,
+                to: .2
+              }
+            });
+            context.noise({
+              fromColor: "553300",
+              toColor: "0050a0",
+              bias: function(v){return v < 0.5 ? 0 : Math.pow(v,5)},
+              opacity: {
+                from: 0,
+                to: .15
+              },
+              grainDimension: 2
+            });
+            for (var y = 0.5; y < 100; y += 25) {
+              context.line(0, y, 100, y);
+            }
+            context.strokeStyle = "#eee";
+            context.stroke();
+          }
+        })
+        .wallPainter({
+          width: 500,
+          height: 1,
+          paint: function(context) {
+            context.line(80.5, 0.5, 80.5, 2.5);
+            context.strokeStyle = "#9be";
+            context.stroke();
+          }
+        });
+
+        // Bricks background
+        $(".bricks").wallPainter({
+          width: 40,
+          height: 20,
+          paint: function(context) {
+            context.strokeStyle = "rgba(0, 0, 0, 0)";
+            context.fillStyle = "#96160B";
+            context.repeat({from: [0, 0], to: [60, 20], increment: [20, 10]}, function(x, y){
+              var shift = (y/10) % 2 === 0 ? 0 : -10;
+              context.fillRect(x + shift + 1, y + 1, 19, 9);
+            });
+            context.noise({opacity: 0.4, fromColor: "dddddd", toColor: "333333"})
+          }
+        });
+
+        // Argyle background
+        $(".argyle").wallPainter({
+          width: 20,
+          height: 40,
+          paint: function(context) {
+            context.strokeStyle = "rgba(0, 0, 0, 0)";
+            context.fillStyle = "#6b5344"
+            context.polygon([10, 0], [20, 20], [10, 40], [0, 20]);
+            context.fill();
+            context.strokeStyle = "#6b5344"
+            context.beginPath();
+            context.line(0, 0, 5.5, 10.5);
+            context.line(20, 0, 14.5, 10.5);
+            context.line(0, 40, 5.5, 29.5);
+            context.line(20, 40, 14.5, 29.5);
+            context.stroke();
+            context.strokeStyle = "#fcfbe3"
+            context.beginPath();
+            context.line(5.5, 10.5, 14.5, 29.5);
+            context.line(14.5, 10.5, 5.5, 29.5);
+            context.stroke();
+            context.noise({opacity: 0.2, fromColor: "fcfbe3", toColor: "6b5344"})
+          }
+        });
+
+        // Denim background
+        $(".denim").wallPainter({
+          width: 90,
+          height: 40,
+          paint: function(ctx) {
+            ctx.fillStyle = "#000080";
+            ctx.fillRect(0, 0, 90, 40);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(200, 200, 255, 0.01)";
+            for(var y = -0.5; y <= 40; y += 2) {
+              ctx.line(-0.5, y, 90.5, y);
+            }
+            ctx.stroke();
+            ctx.lineWidth = 2;
+            ctx.repeat({
+              from: [-1.5, -1.5],
+              to: [93, 40],
+              increment: [4.5, 2.5]
+            }, function(x, y, x_iter, y_iter) {
+              var shifts = [0, -1, -2, -3];
+              ctx.strokeStyle = "rgba(255, 255, 255, " + (0.2 + Math.random()*0.3) + ")";
+              ctx.beginPath();
+              ctx.line(x + shifts[y_iter % 4], y, x + shifts[y_iter % 4], y + 4);
+              ctx.stroke();
+            });
+            ctx.noise({opacity: 0.4, fromColor: "ddddff", toColor: "000033"})
+          }
+        });
+
+        // Fabric background
+        $(".fabric").wallPainter({
+          width: 28,
+          height: 8,
+          paint: function(ctx) {
+            ctx.lineWidth = 2;
+            ctx.repeat({
+              from: [-0.5,-0.5],
+              to: [28, 8],
+              increment: [7, 2]
+            }, function(x, y, x_iter, y_iter) {
+              var s = y_iter % 2 === 0 ? 0 : -3.5;
+              ctx.beginPath();
+              ctx.strokeStyle = "#6b5344";
+              ctx.line(x + s, y, x + s + 5.25, y);
+              ctx.stroke();
+            });
+            ctx.noise({opacity: 0.2, fromColor: "fcfbc3", toColor: "6b5344"})
+          }
+        });
+      });
+    </script>
+
+  </body>
+</html>
