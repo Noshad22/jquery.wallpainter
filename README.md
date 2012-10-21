@@ -56,7 +56,7 @@ context.noise({
   independentChannels: false,      // color channels are independent? (boolean)
   distribution: "bell",            // statistical distribution of noise ("bell", "uniform", "triangular" or number)
   bias: 0,                         // bias of the statistical distribution (positive for bias toward fromColor)
-  randomFunction: /* internal */   // function to generate random number (arguments are distribution, bias, x and y)
+  randomFunction: /* internal */   // function to generate random numbers (arguments are distribution, bias, x and y)
 });
 ```
 
@@ -64,14 +64,12 @@ You can easily add your custom helpers:
 
 ```javascript
 jQuery.wallPainter.mixin({
-
+  // These functions will be mixed in the context object
   myHelper: function() {
     // here `this` is the canvas context
   },
-
   anotherHelper: function() {
     // ...
   }
-
 });
 ```
