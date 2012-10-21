@@ -12,7 +12,7 @@
       // Utilities
       utils = {
         // Generate random numbers from a parametric distribution
-        parametricRandom: function( n, bias ) {
+        parametricRandom: function( n, bias, x, y ) {
           var i, r = 0;
           for ( i = 0; i < n; i++ ) {
               r += Math.random();
@@ -126,16 +126,17 @@
         // Mixin to draw background noise
         noise: function( opts ) {
           var defts = {
-            opacity: { from: 0.1, to: 0.5 },
-            grainDimension: 1,
-            fromColor: "000000",
-            toColor: "606060",
-            independentChannels: false,
-            distribution: "bell",
-            bias: 0
-          },
-          x = 0, y = 0;
-          opts = $.extend( defts, opts );
+                opacity: { from: 0.1, to: 0.5 },
+                grainDimension: 1,
+                fromColor: "000000",
+                toColor: "606060",
+                independentChannels: false,
+                distribution: "bell",
+                bias: 0,
+                randomFunction: utils.parametricRandom
+              },
+              x = 0, y = 0;
+              opts = $.extend( {}, defts, opts );
           // Parse options.distribution and turn it into an integer
           if ( typeof opts.distribution === "string" ) {
             switch( opts.distribution ) {
@@ -158,16 +159,16 @@
                   r, g, b, a;
               if ( !opts.independentChannels ) {
                   // RGB channels are not independent
-                  var rand = utils.parametricRandom( opts.distribution, opts.bias );
+                  var rand = opts.randomFunction( opts.distribution, opts.bias, x, y );
                   r = utils.mapToRange( rand, fromRGB.red, toRGB.red, true );
                   g = utils.mapToRange( rand, fromRGB.green, toRGB.green, true );
                   b = utils.mapToRange( rand, fromRGB.blue, toRGB.blue, true );
                   a = utils.mapToRange( rand, fromRGB.alpha, toRGB.alpha );
               } else {
                   // RGB channels are independent
-                  r = utils.mapToRange( utils.parametricRandom( opts.distribution, opts.bias ), fromRGB.red, toRGB.red, true );
-                  g = utils.mapToRange( utils.parametricRandom( opts.distribution, opts.bias ), fromRGB.green, toRGB.green, true );
-                  b = utils.mapToRange( utils.parametricRandom( opts.distribution, opts.bias ), fromRGB.blue, toRGB.blue, true );
+                  r = utils.mapToRange( opts.randomFunction( opts.distribution, opts.bias, x, y ), fromRGB.red, toRGB.red, true );
+                  g = utils.mapToRange( opts.randomFunction( opts.distribution, opts.bias, x, y ), fromRGB.green, toRGB.green, true );
+                  b = utils.mapToRange( opts.randomFunction( opts.distribution, opts.bias, x, y ), fromRGB.blue, toRGB.blue, true );
                   a = utils.mapToRange( Math.random(), fromRGB.alpha, toRGB.alpha );
               }
               this.fillStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
@@ -212,7 +213,7 @@
       return this;
     } else {
       // Canvas supported :)
-      ctx = canvas.getContext("2d");      
+      ctx = canvas.getContext("2d");
 
       canvas.width = options.width;
       canvas.height = options.height;
