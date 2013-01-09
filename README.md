@@ -7,21 +7,25 @@ A jQuery plugin to paint HTML backgrounds programmatically, preview them in the 
 Usage
 -----
 
-Just select an HTML element and call `jQuery("#my_element").wallPainter({ ... })` specifying the dimension of your background image, and a `paint` method that will receive the `context` of an HTML canvas. In the `paint` method, just paint the canvas using standard methods plus some useful helpers described below. The canvas will be used as the background of your element:
+Just call `jQuery(".my_selector").wallPainter({ /* your options here */ })`. Usually you would specify in the options at least the `width` and `height` of your background image, and a `paint` method.
+The `paint` method will be called passing the `context` of an HTML canvas, so you can just paint the canvas and it will be used as the background for the selected element(s).
+In addition to the standard canvas methods, on the `context` object passed to the `paint` method you can also call some useful helpers (described below).
+
+An example is worth a thousand words:
 
 ```javascript
 // Let's draw a pinstriped background
 $("body").wallPainter({
 
-  // Dimensions of our tiled background image
+  // Dimensions of our background image
   width: 30,
   height: 30,
 
   paint: function( context ) {
-    // First paint a uniform background
+    // First paint a uniform dark grey background
     context.fillBackground("#333");
 
-    // Then add a dashed line
+    // Then add a dashed line, the 'pinstripe'
     context.strokeStyle = "rgba(255, 255, 255, 0.3)";
     context.dashedLine( 15, 0, 15, 30 );
 
@@ -32,8 +36,12 @@ $("body").wallPainter({
 });
 ```
 
-When you are done, double click on a background to open its PNG image version in another browser tab, ready to be exported and used in any browser.
+Producing the background programmatically gives you complete control and the possibility to fine-tune it in development, but is obviously not very efficient in production,
+and not cross-browser. No worries: when you are done, double click on a background to open a PNG version of your background image in another browser tab,
+ready to be saved and used as the background.
 
+If you prefer to use another event instead of double-click to get the PNG image, set the `openImageOn` option to something else, like `openImageOn: "mycustomevent"`. You
+can also set it to false to disable this behavior completely.
 
 Helpers
 -------
@@ -60,7 +68,7 @@ context.noise({
 });
 ```
 
-You can easily add your custom helpers:
+You can also mixin your custom helpers:
 
 ```javascript
 jQuery.wallPainter.mixin({
